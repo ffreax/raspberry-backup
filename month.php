@@ -1,7 +1,7 @@
 <?php
 
 require_once('common.php');
-$settings = include('settings.php');
+$settings = include('config.php');
 
 $whereBase = $settings['where'] . date('Y-M');
 

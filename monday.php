@@ -1,7 +1,7 @@
 <?php
 
 require_once('common.php');
-$settings = include('settings.php');
+$settings = include('config.php');
 
 $monthMetadata = $settings['where'] . date('Y-M') . METADATA_EXT;
 $whereBase = $settings['where'] . date('D-W');
