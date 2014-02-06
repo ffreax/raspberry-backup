@@ -17,7 +17,7 @@ function makeBackup($what, $where, $metaData) {
         '--file=' . $where . ' ' .
         $what;
 
-    echo $command;
+    system($command);
 }
 
 function incrementalBackup($what, $where, $previousMetadata, $currentMetadata) {
