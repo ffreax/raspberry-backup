@@ -20,3 +20,9 @@ function makeBackup($what, $where, $metaData) {
 //    system($command);
     echo $command;
 }
+
+function incrementalBackup($what, $where, $previousMetadata, $currentMetadata) {
+    copy($previousMetadata, $currentMetadata);
+
+    makeBackup($what, $where, $currentMetadata);
+}
