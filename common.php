@@ -21,7 +21,9 @@ function makeBackup($what, $where, $metaData) {
 }
 
 function incrementalBackup($what, $where, $previousMetadata, $currentMetadata) {
-    copy($previousMetadata, $currentMetadata);
+    if(file_exists($previousMetadata)) {
+        copy($previousMetadata, $currentMetadata);
 
-    makeBackup($what, $where, $currentMetadata);
+        makeBackup($what, $where, $currentMetadata);
+    }
 }
