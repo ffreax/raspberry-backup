@@ -17,7 +17,6 @@ function makeBackup($what, $where, $metaData) {
         '--file=' . $where . ' ' .
         $what;
 
-//    system($command);
     echo $command;
 }
 
