@@ -5,6 +5,7 @@ const METADATA_EXT = '.metadata';
 
 function makeBackup($what, $where, $metaData) {
     $settings = settings();
+    $log = $where . '.log';
 
     $command = 'tar --create ';
     $command .= '--ignore-failed-read ';
@@ -13,9 +14,6 @@ function makeBackup($what, $where, $metaData) {
     $command .= '--recursion ';
     $command .= '--sparse ';
     $command .= '--totals ';
-    if($settings['verbose']) {
-        $command .= '--verbose ';
-    }
     if($settings['gzip']) {
         $command .= '--gzip ';
     }
@@ -31,13 +29,13 @@ function makeBackup($what, $where, $metaData) {
 
 
     foreach($settings['before'] as $cmd) {
-        system($cmd);
+        system($cmd . ' >> ' . $log . ' 2>&1');
     }
 
-    system($command);
+    system($command . ' >> ' . $log . ' 2>&1');
 
     foreach($settings['after'] as $cmd) {
-        system($cmd);
+        system($cmd . ' >> ' . $log . ' 2>&1');
     }
 }
 
@@ -56,9 +54,6 @@ function settings() {
     }
 
     $settings = include($argv[1]);
-    if(!isset($settings['verbose'])) {
-        $settings['verbose'] = false;
-    }
     if(!isset($settings['gzip'])) {
         $settings['gzip'] = false;
     }
