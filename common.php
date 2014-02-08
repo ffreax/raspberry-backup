@@ -4,20 +4,41 @@ const BACKUP_EXT = '.backup';
 const METADATA_EXT = '.metadata';
 
 function makeBackup($what, $where, $metaData) {
-    $command = 'tar --create ' .
-        '--ignore-failed-read ' .
-        '--one-file-system ' .
-        '--preserve-permissions ' .
-        '--recursion ' .
-        '--sparse ' .
-        '--totals ' .
-        '--verbose ' .
-//        '--gzip ' .
-        '--listed-incremental=' . $metaData . ' ' .
-        '--file=' . $where . ' ' .
-        $what;
+    $settings = settings();
+
+    $command = 'tar --create ';
+    $command .= '--ignore-failed-read ';
+    $command .= '--one-file-system ';
+    $command .= '--preserve-permissions ';
+    $command .= '--recursion ';
+    $command .= '--sparse ';
+    $command .= '--totals ';
+    if($settings['verbose']) {
+        $command .= '--verbose ';
+    }
+    if($settings['gzip']) {
+        $command .= '--gzip ';
+    }
+
+    $backupIgnore = $what + '.backup-ignore';
+    if(file_exists($backupIgnore)) {
+        $command .= '--exclude-from=' . $backupIgnore . ' ';
+    }
+
+    $command .= '--listed-incremental=' . $metaData . ' ';
+    $command .= '--file=' . $where . ' ';
+    $command .= $what;
+
+
+    foreach($settings['before'] as $cmd) {
+        system($cmd);
+    }
 
     system($command);
+
+    foreach($settings['after'] as $cmd) {
+        system($cmd);
+    }
 }
 
 function incrementalBackup($what, $where, $previousMetadata, $currentMetadata) {
@@ -26,4 +47,27 @@ function incrementalBackup($what, $where, $previousMetadata, $currentMetadata) {
 
         makeBackup($what, $where, $currentMetadata);
     }
+}
+
+function settings() {
+    global $argv;
+    if(empty($argv[1]) || !file_exists($argv[1])) {
+        throw new Exception('please specify correct path to config');
+    }
+
+    $settings = include($argv[1]);
+    if(!isset($settings['verbose'])) {
+        $settings['verbose'] = false;
+    }
+    if(!isset($settings['gzip'])) {
+        $settings['gzip'] = false;
+    }
+
+    if(!isset($settings['before'])) {
+        $settings['before'] = array();
+    }
+    if(!isset($settings['after'])) {
+        $settings['after'] = array();
+    }
+
 }

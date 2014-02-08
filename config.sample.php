@@ -2,5 +2,9 @@
 
 return array(
     'what' => '/path/to/source/folder/',
-    'where' => '/path/to/destination/folder/'
+    'where' => '/path/to/destination/folder/',
+    'verbose' => false,
+    'gzip' => false,
+    'before' => array(),
+    'after' => array()
 );

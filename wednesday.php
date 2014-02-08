@@ -1,7 +1,8 @@
 <?php
 
 require_once('common.php');
-$settings = include('config.php');
+
+$settings = settings();
 
 $mondayMetadata = $settings['where'] . 'Mon-' . date('W') . METADATA_EXT;
 
