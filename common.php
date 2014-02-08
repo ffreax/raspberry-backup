@@ -12,7 +12,7 @@ function makeBackup($what, $where, $metaData) {
         '--sparse ' .
         '--totals ' .
         '--verbose ' .
-        '--gzip ' .
+//        '--gzip ' .
         '--listed-incremental=' . $metaData . ' ' .
         '--file=' . $where . ' ' .
         $what;
