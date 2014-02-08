@@ -27,7 +27,6 @@ function makeBackup($what, $where, $metaData) {
     $command .= '--file=' . $where . ' ';
     $command .= $what;
 
-
     foreach($settings['before'] as $cmd) {
         system($cmd . ' >> ' . $log . ' 2>&1');
     }
@@ -65,4 +64,5 @@ function settings() {
         $settings['after'] = array();
     }
 
+    return $settings;
 }
